@@ -4,9 +4,9 @@ from matplotlib import pyplot as plt
 import json
 import math
 
-IMG_PATH = "assets/360/"
-IMG1_NAME = "dragon_noLight140.png"
-IMG2_NAME = "dragon_noLight160.png"
+IMG_PATH = "assets/lv_24/"
+IMG1_NAME = "LV_21.png"
+IMG2_NAME = "LV_22.png"
 
 img1 = cv2.imread(IMG_PATH + IMG1_NAME, cv2.IMREAD_COLOR)
 img2 = cv2.imread(IMG_PATH + IMG2_NAME, cv2.IMREAD_COLOR)
@@ -36,12 +36,14 @@ outputData["matchPoints"] = []
 
 # ratio test as per Lowe’s paper
 for i, (m, n) in enumerate(matches):
+    # 如果第一個鄰近距離比第二個鄰近距離的0.7倍小，則保留
     if m.distance < 0.7 * n.distance:
         pt1 = kp1[m.queryIdx].pt  # trainIdx    是匹配之后所对应关键点的序号，第一个载入图片的匹配关键点序号
         pt2 = kp2[m.trainIdx].pt  # queryIdx  是匹配之后所对应关键点的序号，第二个载入图片的匹配关键点序号
         distY = abs(pt1[1] - pt2[1])
+        distX = abs(pt1[0] - pt2[0])
         # print(distY)
-        if distY < 15:
+        if distY < 15 and distX < 80:
             matchesMask[i] = [1, 0]
             # cv2.circle(img1, (int(pt1[0]), int(pt1[1])), 5, (255, 0, 255), -1)
             # cv2.circle(img2, (int(pt2[0]), int(pt2[1])), 5, (255, 0, 255), -1)
@@ -53,7 +55,6 @@ for i, (m, n) in enumerate(matches):
             # print(dist)
 
             matchPoint = {
-                "matchIndex": i,
                 "keyPointOne": pt1,
                 "keyPointTwo": pt2,
             }
