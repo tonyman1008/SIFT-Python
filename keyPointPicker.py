@@ -1,17 +1,14 @@
 import cv2
 import json
+import os
 
-IMG_PATH = "assets/dragon_360/"
-IMG1_NAME = "dragon_noLight000.png"
-IMG2_NAME = "dragon_noLight001.png"
+IMG_PATH = "assets/lv_24/"
+IMG1_NAME = "LV_21.png"
+IMG2_NAME = "LV_22.png"
 
 img1 = cv2.imread(IMG_PATH + IMG1_NAME, cv2.IMREAD_COLOR)
 img2 = cv2.imread(IMG_PATH + IMG2_NAME, cv2.IMREAD_COLOR)
 
-img_concat = cv2.hconcat([img1, img2])
-
-# the [x, y] for each right-click event will be stored here
-matchPoints = list()
 
 # create 2 windows
 cv2.namedWindow("img1")
@@ -25,13 +22,19 @@ outputData = {}
 outputData["matchPoints"] = []
 onePairMatchComplete = False
 
+outputPath = (
+    "MatchPointsData/" + IMG1_NAME.split(".")[0] + "&" + IMG2_NAME.split(".")[0] + "/"
+)
+
+if not os.path.exists(outputPath):
+    os.makedirs(outputPath)
+
 # this function will be called whenever the mouse is right-clicked
 def mouse_callback(event, x, y, flags, params):
 
     # right-click event value is 2
     if event == cv2.EVENT_LBUTTONDOWN:
         global outputData
-        global matchPoints
         global onePairMatchComplete
         global ImgPickingIndex
         global tempKeyPointOne
@@ -66,7 +69,11 @@ def mouse_callback(event, x, y, flags, params):
             tempKeyPointTwo.clear()
             tempKeyPointOne.clear()
             outputData["matchPoints"].append(matchPoint)
-            with open("MatchPointsData/MatchPoints.json", "w") as jsonfile:
+
+            with open(
+                outputPath + "MatchPoints.json",
+                "w",
+            ) as jsonfile:
                 json.dump(outputData, jsonfile)
 
 
@@ -79,5 +86,7 @@ while True:
     cv2.imshow("img1", img1)
     cv2.imshow("img2", img2)
     if cv2.waitKey(1) & 0xFF == ord("q"):
+        img_concat = cv2.hconcat([img1, img2])
+        cv2.imwrite(outputPath + "MatchPoints.jpg", img_concat)
         break
 cv2.destroyAllWindows()
