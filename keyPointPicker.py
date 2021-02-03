@@ -2,7 +2,7 @@ import cv2
 import json
 import os
 
-IMG_PATH = "assets/lv_24/"
+IMG_PATH = "assets/lv24p/"
 IMG1_NAME = "LV_21.png"
 IMG2_NAME = "LV_22.png"
 
@@ -25,9 +25,6 @@ onePairMatchComplete = False
 outputPath = (
     "MatchPointsData/" + IMG1_NAME.split(".")[0] + "&" + IMG2_NAME.split(".")[0] + "/"
 )
-
-if not os.path.exists(outputPath):
-    os.makedirs(outputPath)
 
 # this function will be called whenever the mouse is right-clicked
 def mouse_callback(event, x, y, flags, params):
@@ -70,11 +67,17 @@ def mouse_callback(event, x, y, flags, params):
             tempKeyPointOne.clear()
             outputData["matchPoints"].append(matchPoint)
 
+            if not os.path.exists(outputPath):
+                os.makedirs(outputPath)
+
             with open(
                 outputPath + "MatchPoints.json",
                 "w",
             ) as jsonfile:
                 json.dump(outputData, jsonfile)
+
+            img_concat = cv2.hconcat([img1, img2])
+            cv2.imwrite(outputPath + "MatchPoints.jpg", img_concat)
 
 
 # set mouse callback function for window
@@ -86,7 +89,5 @@ while True:
     cv2.imshow("img1", img1)
     cv2.imshow("img2", img2)
     if cv2.waitKey(1) & 0xFF == ord("q"):
-        img_concat = cv2.hconcat([img1, img2])
-        cv2.imwrite(outputPath + "MatchPoints.jpg", img_concat)
         break
 cv2.destroyAllWindows()
