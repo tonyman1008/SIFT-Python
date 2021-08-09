@@ -1,14 +1,27 @@
 import cv2
 import json
 import os
+import numpy as np
 
-IMG_PATH = "assets/lv24p/"
-IMG1_NAME = "LV_21.png"
-IMG2_NAME = "LV_22.png"
+DATA_SET_NAME = "bag4"
+IMG_PATH = "assets/"+DATA_SET_NAME+"/"
+IMG1_NAME = "frame0.png"
+IMG2_NAME = "frame1.png"
 
 img1 = cv2.imread(IMG_PATH + IMG1_NAME, cv2.IMREAD_COLOR)
 img2 = cv2.imread(IMG_PATH + IMG2_NAME, cv2.IMREAD_COLOR)
 
+# resize
+resizeFactor = 2
+height, width = img1.shape[0], img1.shape[1]
+
+width_new = width / resizeFactor
+height_new = height / resizeFactor
+
+img1 = cv2.resize(img1, (int(width_new), int(height_new)),
+                  interpolation=cv2.INTER_AREA)
+img2 = cv2.resize(img1, (int(width_new), int(height_new)),
+                  interpolation=cv2.INTER_AREA)
 
 # create 2 windows
 cv2.namedWindow("img1")
@@ -23,10 +36,13 @@ outputData["matchPoints"] = []
 onePairMatchComplete = False
 
 outputPath = (
-    "MatchPointsData/" + IMG1_NAME.split(".")[0] + "&" + IMG2_NAME.split(".")[0] + "/"
+    "MatchPointsData/" + DATA_SET_NAME + "/" +
+    IMG1_NAME.split(".")[0] + "&" + IMG2_NAME.split(".")[0] + "/"
 )
 
 # this function will be called whenever the mouse is right-clicked
+
+
 def mouse_callback(event, x, y, flags, params):
 
     # right-click event value is 2
@@ -47,7 +63,7 @@ def mouse_callback(event, x, y, flags, params):
             cv2.circle(img1, (x, y), 4, (255, 0, 0), 2)
             print([x, y])
 
-            tempKeyPointOne = [x, y]
+            tempKeyPointOne = [x*resizeFactor, y*resizeFactor]
             ImgPickingIndex = 2
         elif params == 2:
             # visualize
@@ -55,7 +71,7 @@ def mouse_callback(event, x, y, flags, params):
             print([x, y])
 
             # store a record
-            tempKeyPointTwo = [x, y]
+            tempKeyPointTwo = [x*resizeFactor, y*resizeFactor]
             ImgPickingIndex = 1
 
             # a pair data complete
