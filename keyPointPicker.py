@@ -6,7 +6,7 @@ import numpy as np
 DATA_SET_NAME = "bag4"
 IMG_PATH = "assets/"+DATA_SET_NAME+"/"
 IMG1_NAME = "frame0.png"
-IMG2_NAME = "frame1.png"
+IMG2_NAME = "frame2.png"
 
 img1 = cv2.imread(IMG_PATH + IMG1_NAME, cv2.IMREAD_COLOR)
 img2 = cv2.imread(IMG_PATH + IMG2_NAME, cv2.IMREAD_COLOR)
@@ -20,7 +20,7 @@ height_new = height / resizeFactor
 
 img1 = cv2.resize(img1, (int(width_new), int(height_new)),
                   interpolation=cv2.INTER_AREA)
-img2 = cv2.resize(img1, (int(width_new), int(height_new)),
+img2 = cv2.resize(img2, (int(width_new), int(height_new)),
                   interpolation=cv2.INTER_AREA)
 
 # create 2 windows
