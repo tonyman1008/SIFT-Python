@@ -1,9 +1,9 @@
 import cv2  # Import OpenCV
-import numpy as np  # Import NumPy
+import numpy as np
+from numpy.core.numeric import count_nonzero  # Import NumPy
 
-# Read in the image as grayscale - Note the 0 flag
-
-img = cv2.imread("./assets/N1-17.png", cv2.IMREAD_UNCHANGED)
+img_origin = cv2.imread("./assets/car_1000x1000/0.png", cv2.IMREAD_UNCHANGED)
+img = cv2.imread("./assets/car_1000x1000/0.png", cv2.IMREAD_UNCHANGED)
 rows, cols = img.shape[:2]
 for i in range(rows):
     for j in range(cols):
@@ -26,6 +26,10 @@ _, contours, hierarchy = cv2.findContours(
 # image
 out = np.zeros_like(img2)
 
+for i in range(len(contours[0])):
+    print(contours[0][i])
+    # img_origin[contours[0][i].x, contours[0][i].y] = [0, 0, 255]
+
 # On this output, draw all of the contours that we have detected
 # in white, and set the thickness to be 3 pixels
 cv2.drawContours(out, contours, -1, 255, 3)
@@ -35,7 +39,7 @@ cv2.drawContours(out, contours, -1, 255, 3)
 
 cv2.namedWindow("gray")
 
-cv2.imshow("origin", img)
+cv2.imshow("origin", img_origin)
 cv2.imshow("gray", img2)
 cv2.imshow("Output Contour", out)
 
