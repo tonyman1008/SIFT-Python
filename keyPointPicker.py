@@ -3,16 +3,16 @@ import json
 import os
 import numpy as np
 
-DATA_SET_NAME = "bag4"
+DATA_SET_NAME = "red_bag"
 IMG_PATH = "assets/"+DATA_SET_NAME+"/"
-IMG1_NAME = "frame0.png"
-IMG2_NAME = "frame2.png"
+IMG1_NAME = "frame70.png"
+IMG2_NAME = "frame0.png"
 
 img1 = cv2.imread(IMG_PATH + IMG1_NAME, cv2.IMREAD_COLOR)
 img2 = cv2.imread(IMG_PATH + IMG2_NAME, cv2.IMREAD_COLOR)
 
 # resize
-resizeFactor = 2
+resizeFactor = 1.5
 height, width = img1.shape[0], img1.shape[1]
 
 width_new = width / resizeFactor

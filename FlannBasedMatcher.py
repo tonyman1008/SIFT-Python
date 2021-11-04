@@ -2,11 +2,11 @@ import numpy as np
 import cv2 as cv2
 from matplotlib import pyplot as plt
 import json
-import math
 
-IMG_PATH = "assets/lv_24/"
-IMG1_NAME = "LV_21.png"
-IMG2_NAME = "LV_22.png"
+DATA_SET_NAME = "lv24p"
+IMG_PATH = "assets/"+DATA_SET_NAME+"/"
+IMG1_NAME = "LV_01.png"
+IMG2_NAME = "LV_02.png"
 
 img1 = cv2.imread(IMG_PATH + IMG1_NAME, cv2.IMREAD_COLOR)
 img2 = cv2.imread(IMG_PATH + IMG2_NAME, cv2.IMREAD_COLOR)
@@ -60,7 +60,7 @@ for i, (m, n) in enumerate(matches):
             }
             outputData["matchPoints"].append(matchPoint)
 
-            with open("MatchPointsData/MatchPoints.json", "w") as jsonfile:
+            with open("MatchPointsData/SIFT/MatchPoints.json", "w") as jsonfile:
                 json.dump(outputData, jsonfile)
 
     # Anchor (0,0), (x,y) is (left,top)
@@ -70,7 +70,8 @@ draw_params = dict(
     matchesMask=matchesMask,
     flags=0,
 )
-res = cv2.drawMatchesKnn(img1_gray, kp1, img2_gray, kp2, matches, None, **draw_params)
+res = cv2.drawMatchesKnn(img1_gray, kp1, img2_gray,
+                         kp2, matches, None, **draw_params)
 
 # plt.imshow(res), plt.show()
 cv2.imshow("Result", res)
