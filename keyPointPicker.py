@@ -8,8 +8,10 @@ IMG_PATH = "assets/"+DATA_SET_NAME+"/"
 IMG1_NAME = "frame70.png"
 IMG2_NAME = "frame0.png"
 
-img1 = cv2.imread(IMG_PATH + IMG1_NAME, cv2.IMREAD_COLOR)
-img2 = cv2.imread(IMG_PATH + IMG2_NAME, cv2.IMREAD_COLOR)
+# img1 = cv2.imread(IMG_PATH + IMG1_NAME, cv2.IMREAD_COLOR)
+# img2 = cv2.imread(IMG_PATH + IMG2_NAME, cv2.IMREAD_COLOR)
+img1 = cv2.imread("assets/forward/18.png", cv2.IMREAD_COLOR)
+img2 = cv2.imread("assets/backward/18.png", cv2.IMREAD_COLOR)
 
 # resize
 resizeFactor = 1.5
@@ -35,9 +37,12 @@ outputData = {}
 outputData["matchPoints"] = []
 onePairMatchComplete = False
 
+# outputPath = (
+#     "MatchPointsData/" + DATA_SET_NAME + "/" +
+#     IMG1_NAME.split(".")[0] + "&" + IMG2_NAME.split(".")[0] + "/"
+# )
 outputPath = (
-    "MatchPointsData/" + DATA_SET_NAME + "/" +
-    IMG1_NAME.split(".")[0] + "&" + IMG2_NAME.split(".")[0] + "/"
+    "MatchPointsData/BoundaryTest/"
 )
 
 # this function will be called whenever the mouse is right-clicked
